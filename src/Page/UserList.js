@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Nav } from '../Components/Nav';
 import { SearchBar } from '../Components/SearchBar';
 import { Members } from '../Components/Members';
+import axios from 'axios';
 import styled from 'styled-components';
 
-function UserList({ findName, handleChange }) {
+function UserList() {
+  const [memberShip, setMemberShip] = useState([]);
+  const [userInput, setUserInput] = useState('');
+
+  const fetchList = () => {
+    axios
+      .get('https://reqres.in/api/users?per_page=12&page=1')
+      .then(res => setMemberShip(res.data.data));
+  };
+
+  const handleChange = e => {
+    setUserInput(e.target.value);
+  };
+
+  useEffect(() => {
+    fetchList();
+  }, []);
+
+  const findName = memberShip.filter(word =>
+    word.first_name.concat(word.last_name).toLowerCase().includes(userInput)
+  );
+
   return (
     <>
       <NavColor />

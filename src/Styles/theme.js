@@ -8,6 +8,7 @@ const theme = {
   gray: 'rgba(196,196,196,0.3)',
   middleGray: 'rgba(65,65,65,0.4)',
   deepGray: '#828282',
+  modalGray: 'rgba(0, 0, 0, 0.67)',
   lightOrange: 'rgba(255,195,170,0.3)',
   fontColor: '#2D2B2B',
   fontTitle: "'Alata', sans-serif;",
