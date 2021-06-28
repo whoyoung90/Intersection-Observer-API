@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from './Modal';
 import styled from 'styled-components';
 
-export const Members = ({ findName }) => {
+export const Members = ({ loading, findName }) => {
   const [isModalView, setModalView] = useState(false);
   const [pickId, setPickId] = useState('');
 

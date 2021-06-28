@@ -1,15 +1,14 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 export const Nav = () => {
-  const history = useHistory();
-  const goToMain = () => {
-    history.push('/');
+  const reloadPage = () => {
+    window.location.reload();
   };
+
   return (
     <Wrap>
-      <Title onClick={goToMain}>DDIVE</Title>
+      <Title onClick={reloadPage}>DDIVE</Title>
     </Wrap>
   );
 };
