@@ -1,10 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Nav } from '../Components/Nav';
 import { SearchBar } from '../Components/SearchBar';
 import { Members } from '../Components/Members';
+import axios from 'axios';
 import styled from 'styled-components';
 
-function UserList({ findName, handleChange }) {
+export default function UserList() {
+  const [memberShip, setMemberShip] = useState([]);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(false);
+  const [noData, setNoData] = useState(false);
+
+  const [userInput, setUserInput] = useState('');
+
+  async function fetchList(pageNumber) {
+    try {
+      const res = await axios.get(
+        `https://reqres.in/api/users?per_page=12&page=${pageNumber}`
+      );
+      setMemberShip(respond => [...respond, ...res.data.data]);
+      setLoading(true);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setMessage(false);
+      setTimeout(() => {
+        setNoData(true);
+      }, 2000);
+    }
+  }
+
+  useEffect(() => {
+    fetchList(pageNumber);
+  }, [pageNumber]);
+
+  const loadMore = () => {
+    setPageNumber(prevPageNumber => prevPageNumber + 1);
+  };
+
+  const pageEnd = useRef();
+  let num = 0;
+
+  useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        /* 옵져버 정의*/
+        const observer = new IntersectionObserver(
+          entries => {
+            if (entries[0].isIntersecting) {
+              num++;
+              loadMore();
+            }
+          },
+          { threshold: 1 }
+        );
+
+        /* 옵져버 실행문*/
+        observer.observe(pageEnd.current);
+      }, 1500);
+      setMessage(true);
+    }
+  }, [loading, num]);
+
+  /* 검색 기능  */
+  const handleChange = e => {
+    setUserInput(e.target.value);
+  };
+
+  const findName = memberShip.filter(word =>
+    word.first_name.concat(word.last_name).toLowerCase().includes(userInput)
+  );
+
   return (
     <>
       <NavColor />
@@ -12,11 +79,13 @@ function UserList({ findName, handleChange }) {
         <Nav />
         <SearchBar handleChange={handleChange} />
         <Members findName={findName} />
+        {message ? <Final>loading...</Final> : ''}
+        {noData ? <Final>No Data Anymore ...</Final> : ''}
+        <div ref={pageEnd}></div>
       </Wrap>
     </>
   );
 }
-export default UserList;
 
 const NavColor = styled.div`
   position: fixed;
@@ -31,4 +100,11 @@ const Wrap = styled.div`
   padding-top: 100px;
   margin: 0 auto;
   width: 1250px;
+`;
+
+const Final = styled.div`
+  margin-bottom: 40px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
 `;
