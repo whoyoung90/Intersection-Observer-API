@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from './Modal';
 import styled from 'styled-components';
 
-export const Members = ({ loading, findName }) => {
+export const Members = ({ findName }) => {
   const [isModalView, setModalView] = useState(false);
   const [pickId, setPickId] = useState('');
 
@@ -12,6 +12,7 @@ export const Members = ({ loading, findName }) => {
 
   const idCheck = el => {
     setPickId(el);
+    // console.log(el);
   };
 
   return (

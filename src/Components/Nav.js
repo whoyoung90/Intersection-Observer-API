@@ -8,7 +8,7 @@ export const Nav = () => {
 
   return (
     <Wrap>
-      <Title onClick={reloadPage}>DDIVE</Title>
+      <Title onClick={reloadPage}>Infinite Scroll</Title>
     </Wrap>
   );
 };
@@ -22,7 +22,7 @@ const Wrap = styled.div`
 `;
 const Title = styled.div`
   padding: 20px;
-  width: 100px;
+  width: 300px;
   font-size: 30px;
   font-weight: bold;
   cursor: pointer;
