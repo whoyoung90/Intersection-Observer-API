@@ -5,10 +5,14 @@ import styled from 'styled-components';
 export const Modal = ({ id, handleChange }) => {
   const [info, setInfo] = useState([]);
 
-  const getInformation = () => {
-    axios
-      .get(`https://reqres.in/api/users/${id}`)
-      .then(res => setInfo(res.data.data));
+  const getInformation = async () => {
+    try {
+      await axios
+        .get(`https://reqres.in/api/users/${id}`)
+        .then(res => setInfo(res.data.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -50,7 +54,7 @@ const Wrap = styled.div`
 const SubWrap = styled.article`
   display: flex;
   flex-direction: column;
-  align-items: inherit;
+  align-items: center;
   width: 300px;
   height: 370px;
   padding-top: 20px;
